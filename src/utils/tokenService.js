@@ -1,26 +1,18 @@
+const TOKEN_KEY = "auth-token";
+
 const authStorage = {
-  getAuthState: () => {
-    const storedData = localStorage.getItem("token");
-
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      return { isAuthenticated: true, ...parsedData };
-    }
-
-    return { isAuthenticated: false, user: null, token: null };
+  saveAuthState: (authData) => {
+    localStorage.setItem(TOKEN_KEY, JSON.stringify(authData));
   },
 
-  setAuthState: (authState) => {
-    if (authState.isAuthenticated) {
-      localStorage.setItem("token", JSON.stringify(authState));
-    } else {
-      authStorage.clearAuthState();
-    }
+  getAuthState: () => {
+    const data = localStorage.getItem(TOKEN_KEY);
+    return data ? JSON.parse(data) : { isAuthenticated: false, user: null, token: null };
   },
 
   clearAuthState: () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem(TOKEN_KEY);
   },
 };
 
-export default authStorage
+export default authStorage;
